@@ -1,0 +1,17 @@
+body {
+  background-color: rgb(184, 184, 184);
+}
+
+.canvas-details {
+  border: 1px solid #000000;
+}
+
+#number_drawing {
+  font-size: 400px;
+  text-align: center;
+  line-height: 400px;
+
+  height: 500px;
+  width: 500px;
+  border: 1px solid #000000;
+}

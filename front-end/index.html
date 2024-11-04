@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="container mt-1">
+      <div class="row">
+        <div class="col-12 mb-1">
+          <button class="btn btn-primary" onclick="submitUserCanvas()">
+            Submit
+          </button>
+          <button
+            class="btn btn-primary float-right"
+            onclick="resetCanvasInput()"
+          >
+            Reset
+          </button>
+        </div>
+        <div class="col-12 col-xl-6">
+          <canvas
+            id="user_drawing"
+            width="500"
+            height="500"
+            class="canvas-details"
+          ></canvas>
+        </div>
+        <div class="col-12 col-xl-6">
+          <div id="number_drawing"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script src="/js/code.js"></script>
+  </body>
+</html>
