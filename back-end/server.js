@@ -14,11 +14,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(publicDirectory, "index.html"));
 });
 
+const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+var same_name = `canvas-${uniqueSuffix}.png`;
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../Ai/input-folder"),
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, `canvas-${uniqueSuffix}.png`);
+    cb(null, same_name);
   },
 });
 
@@ -29,20 +30,23 @@ app.post("/traiter-canvas", upload.single("canvas"), (req, res) => {
     return res.status(400).json({ error: "No file uploaded" });
   }
 
-  exec("cd ../Ai && python ai-recognition.py", (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Execution error: ${error}`);
-      return res.status(500).json({ error: "Failed to process the image" });
-    }
+  exec(
+    `cd ../Ai && python ai-recognition.py ${same_name}`,
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Execution error: ${error}`);
+        return res.status(500).json({ error: "Failed to process the image" });
+      }
 
-    try {
-      const result = JSON.parse(stdout);
-      res.json(result);
-    } catch (parseError) {
-      console.error(`Parsing error: ${parseError}`);
-      res.status(500).json({ error: "Failed to parse output" });
+      try {
+        const result = JSON.parse(stdout);
+        res.json(result);
+      } catch (parseError) {
+        console.error(`Parsing error: ${parseError}`);
+        res.status(500).json({ error: "Failed to parse output" });
+      }
     }
-  });
+  );
 });
 
 app.get("*", (req, res, next) => {
