@@ -2,11 +2,10 @@ import os
 import sys
 import json
 import tensorflow as tf
-import cv2
+from PIL import Image
 import numpy as np
 
 # Define parameters
-image_size = (64, 64)
 model_path = 'handwriting_recognition_model.h5'
 input_folder = './input-folder/'
 
@@ -27,10 +26,9 @@ if not os.path.isfile(file_path):
 # Load the model
 model = tf.keras.models.load_model(model_path)
 
-# Read, resize, and normalize the image
-new_img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
-new_img = cv2.resize(new_img, image_size)
-new_img = new_img.reshape(1, image_size[0], image_size[1], 1) / 255.0  # Normalize
+# Read the image with PIL
+new_img = Image.open(file_path).convert('L')  # Convert to grayscale
+new_img = np.array(new_img).reshape(1, 255, 255, 1)  # Ensure it matches model's input shape
 
 # Predict the label
 prediction = model.predict(new_img)

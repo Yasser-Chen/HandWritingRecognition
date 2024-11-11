@@ -81,25 +81,42 @@ function submitUserCanvas() {
   sending = true;
 
   canvas.toBlob(function (blob) {
-    const fd = new FormData();
-    fd.append("canvas", blob, "user_drawing.png");
+    const img = new Image();
+    img.src = URL.createObjectURL(blob);
 
-    $.ajax({
-      url: "/traiter-canvas",
-      type: "POST",
-      data: fd,
-      contentType: false,
-      processData: false,
-      success: function (res) {
-        $("#number_drawing").html(res.text);
-      },
-      error: function (err) {
-        console.error("Error:", err);
-      },
-      complete: function (res) {
-        sending = false;
-      },
-    });
+    img.onload = function () {
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = 255;
+      tempCanvas.height = 255;
+      const tempCtx = tempCanvas.getContext("2d");
+
+      tempCtx.drawImage(img, 0, 0, 255, 255);
+
+      tempCanvas.toBlob(function (resizedBlob) {
+        const fd = new FormData();
+        fd.append("canvas", resizedBlob, "user_drawing.png");
+
+        $.ajax({
+          url: "/traiter-canvas",
+          type: "POST",
+          data: fd,
+          contentType: false,
+          processData: false,
+          success: function (res) {
+            $("#number_drawing").html(res.text);
+          },
+          error: function (err) {
+            console.error("Error:", err);
+          },
+          complete: function () {
+            sending = false;
+          },
+        });
+      }, "image/png");
+
+      // Clean up object URL
+      URL.revokeObjectURL(img.src);
+    };
   }, "image/png");
 }
 
