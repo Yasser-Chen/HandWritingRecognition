@@ -1,3 +1,7 @@
+//PARAMS
+const thickness = 20;
+//
+
 const canvas = document.getElementById("user_drawing");
 const ctx = canvas.getContext("2d");
 
@@ -36,13 +40,13 @@ function draw(e) {
   // Set drawing properties
   ctx.fillStyle = "black";
   ctx.strokeStyle = "black";
-  ctx.lineWidth = 5;
+  ctx.lineWidth = thickness * 2;
 
   // Draw a smooth pen line
   ctx.lineTo(x, y);
   ctx.stroke();
   ctx.beginPath(); // Reset path to avoid continuous line
-  ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+  ctx.arc(x, y, thickness, 0, Math.PI * 2);
   ctx.fill();
   ctx.beginPath();
   ctx.moveTo(x, y);

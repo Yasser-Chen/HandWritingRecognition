@@ -22,27 +22,32 @@ print("Step 1: Loading and preprocessing images...")
 images = []
 labels = []
 
-
 def preprocess_image(img_path, target_size=(64, 64)):
-    # Open image with Pillow and ensure it has an alpha channel
+    # Open image with Pillow, ensuring it has an alpha channel
     img = Image.open(img_path).convert("RGBA")
     
-    # Create white background and paste original image on it
+    # Create a white background image and paste original image onto it
     white_bg = Image.new("RGB", img.size, (255, 255, 255))
-    white_bg.paste(img, mask=img.split()[3])  # Alpha channel as mask
+    white_bg.paste(img, mask=img.split()[3])  # Use alpha channel as mask
     
-    # Convert to grayscale (black text on white background)
+    # Convert to grayscale so text is black and background is white
     gray_img = white_bg.convert("L")
     
-    # Invert the image: Now black text on white background
-    inverted_gray_img = Image.eval(gray_img, lambda x: 255 - x)
+    # Invert thresholding: make the background black (0) and the text/image white (255)
+    binary_img = gray_img.point(lambda x: 0 if x > 254 else 255)
     
-    # Resize to target size
-    inverted_gray_img = inverted_gray_img.resize(target_size)
-
+    # Resize to the target size
+    binary_img = binary_img.resize(target_size)
+    
     # Convert image to array and normalize
-    img_array = img_to_array(inverted_gray_img) / 255.0
-    return img_array
+    img_array = img_to_array(binary_img) / 255.0  # Normalize to match training
+    
+    # Ensure the array has the desired shape (64, 64, 1)
+    if img_array.shape[-1] == 1:
+        return img_array  # Already has the desired shape
+    else:
+        return np.expand_dims(img_array, axis=-1)  # Add the single channel dimension if needed
+
 
 for a in os.listdir(data_dir):
     s = os.path.join(data_dir, a)
