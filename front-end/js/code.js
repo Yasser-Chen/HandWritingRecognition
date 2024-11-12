@@ -79,7 +79,7 @@ function submitUserCanvas() {
 
   if (sending) return;
   sending = true;
-
+  $("#processingOverlay").css({ display: "flex" });
   canvas.toBlob(function (blob) {
     const img = new Image();
     img.src = URL.createObjectURL(blob);
@@ -110,6 +110,7 @@ function submitUserCanvas() {
           },
           complete: function () {
             sending = false;
+            $("#processingOverlay").css({ display: "none" });
           },
         });
       }, "image/png");

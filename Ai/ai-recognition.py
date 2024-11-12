@@ -5,6 +5,10 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 
+# Suppress TensorFlow logging and progress bars
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Hide TensorFlow messages
+tf.get_logger().setLevel('ERROR')
+
 # Define parameters
 model_path = 'handwriting_recognition_model.h5'
 input_folder = './input-folder/'
@@ -26,12 +30,16 @@ if not os.path.isfile(file_path):
 # Load the model
 model = tf.keras.models.load_model(model_path)
 
-# Read the image with PIL
+# Load and prepare the image
 new_img = Image.open(file_path).convert('L')  # Convert to grayscale
-new_img = np.array(new_img).reshape(1, 255, 255, 1)  # Ensure it matches model's input shape
+new_img = new_img.resize((64, 64))  # Resize to 64x64 to match model's expected input size
+
+# Convert the image to a numpy array, normalize, and reshape
+new_img = np.array(new_img).reshape(1, 64, 64, 1)  # Reshape to (1, 64, 64, 1)
+new_img = new_img.astype('float32') / 255  # Normalize pixel values if required by the model
 
 # Predict the label
-prediction = model.predict(new_img)
+prediction = model.predict(new_img, verbose=0)  # Disable prediction progress output
 predicted_label = int(np.argmax(prediction))
 
 # Delete the processed image
