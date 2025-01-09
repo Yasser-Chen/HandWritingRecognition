@@ -22,6 +22,7 @@ print("Step 1: Loading and preprocessing images...")
 images = []
 labels = []
 
+
 def preprocess_image(img_path, target_size=(64, 64)):
     # Open image with Pillow, ensuring it has an alpha channel
     img = Image.open(img_path).convert("RGBA")
