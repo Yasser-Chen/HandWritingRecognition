@@ -24,14 +24,23 @@ migrate_working_dir/
 #.vscode/
 
 # Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Build outputs
 /build/
+**/build/
+
+# Android Studio related
+/android/app/debug
+/android/app/profile
+/android/app/release
 
 # Symbolication related
 app.*.symbols
@@ -39,7 +48,37 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# iOS related
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework/
+ios/Flutter/engine/
+
+# Web related
+web/manifest.json
+web/favicon.png
+web/icons/
+
+# MacOS related
+macos/Pods/
+macos/.symlinks/
+macos/Flutter/Flutter.framework/
+macos/Flutter/App.framework/
+macos/Flutter/engine/
+macos/Flutter/Flutter.podspec
+
+# Windows related
+windows/flutter/ephemeral/
+
+# Linux related
+linux/flutter/ephemeral/
+
+# Firebase related
+android/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Ignore generated files
+**/generated*
+**/Generated*

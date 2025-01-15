@@ -54,7 +54,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'WriteVision' : 'Handwriting Recognition', style: TextStyle(color: Colors.white)),
+        title: Text(
+            _selectedIndex == 0 ? 'WriteVision' : 'Handwriting Recognition',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
         actions: [
           TextButton(
@@ -66,7 +68,8 @@ class _MainScreenState extends State<MainScreen> {
           ),
           TextButton(
             onPressed: () => _onItemTapped(1),
-            child: Text('Handwriting Recognition', style: TextStyle(color: Colors.white)),
+            child: Text('Handwriting Recognition',
+                style: TextStyle(color: Colors.white)),
             style: TextButton.styleFrom(
               backgroundColor: Colors.blue,
             ),
@@ -77,7 +80,9 @@ class _MainScreenState extends State<MainScreen> {
         builder: (context, constraints) {
           return Center(
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: constraints.maxWidth > 800 ? 800 : constraints.maxWidth),
+              constraints: BoxConstraints(
+                  maxWidth:
+                      constraints.maxWidth > 800 ? 800 : constraints.maxWidth),
               child: _widgetOptions.elementAt(_selectedIndex),
             ),
           );
@@ -97,12 +102,14 @@ class HomePage extends StatelessWidget {
         children: [
           Text(
             'Handwriting Recognition Application 🌟',
-            style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blue),
+            style: GoogleFonts.poppins(
+                fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
           SizedBox(height: 10),
           Text(
             'Discover the Magic of AI in the Palm of Your Hand!',
-            style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
+            style: GoogleFonts.poppins(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
           ),
           SizedBox(height: 20),
           Text(
@@ -117,7 +124,8 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 20),
           Text(
             'What Makes Our App Unique?',
-            style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+            style: GoogleFonts.poppins(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
           SizedBox(height: 10),
           Text(
@@ -147,7 +155,8 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 20),
           Text(
             'How It Works',
-            style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+            style: GoogleFonts.poppins(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
           SizedBox(height: 10),
           VideoPlayerWidget(),
@@ -159,7 +168,8 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 20),
           Text(
             'Why You\'ll Love It',
-            style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+            style: GoogleFonts.poppins(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
           SizedBox(height: 10),
           Text(
@@ -179,7 +189,8 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 20),
           Text(
             'Try It Now!',
-            style: GoogleFonts.poppins(fontSize: 16, color: Colors.blue, fontWeight: FontWeight.bold),
+            style: GoogleFonts.poppins(
+                fontSize: 16, color: Colors.blue, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 20),
           Text(
@@ -230,10 +241,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
 class HandwritingRecognitionPage extends StatefulWidget {
   @override
-  _HandwritingRecognitionPageState createState() => _HandwritingRecognitionPageState();
+  _HandwritingRecognitionPageState createState() =>
+      _HandwritingRecognitionPageState();
 }
 
-class _HandwritingRecognitionPageState extends State<HandwritingRecognitionPage> {
+class _HandwritingRecognitionPageState
+    extends State<HandwritingRecognitionPage> {
   bool _isDrawing = false;
   bool _isImporting = false;
   Uint8List? _imageData;
@@ -259,7 +272,7 @@ class _HandwritingRecognitionPageState extends State<HandwritingRecognitionPage>
 
     if (imageData != null) {
       final response = await http.post(
-        Uri.parse('YOUR_ENDPOINT_URL'),
+        Uri.parse('/traiter-canvas'),
         body: imageData,
         headers: {'Content-Type': 'image/png'},
       );
@@ -304,13 +317,15 @@ class _HandwritingRecognitionPageState extends State<HandwritingRecognitionPage>
       _isImporting = true;
       _canvasVisible = true;
     });
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null) {
       Uint8List? imageData = result.files.single.bytes;
       if (imageData != null) {
         img.Image? image = img.decodeImage(imageData);
         if (image != null) {
-          img.Image resizedImage = img.copyResize(image, width: 400, height: 500);
+          img.Image resizedImage =
+              img.copyResize(image, width: 400, height: 500);
           setState(() {
             _imageData = Uint8List.fromList(img.encodePng(resizedImage));
           });
@@ -418,13 +433,18 @@ class _HandwritingRecognitionPageState extends State<HandwritingRecognitionPage>
                               )
                         : GestureDetector(
                             onPanUpdate: (details) {
-                              RenderBox renderBox = context.findRenderObject() as RenderBox;
-                              _addPointWithOffset(renderBox.globalToLocal(details.globalPosition), details.delta);
+                              RenderBox renderBox =
+                                  context.findRenderObject() as RenderBox;
+                              _addPointWithOffset(
+                                  renderBox
+                                      .globalToLocal(details.globalPosition),
+                                  details.delta);
                             },
                             onPanEnd: (details) {
                               setState(() {
                                 if (_points.isNotEmpty) {
-                                  _points.removeLast(); // Remove the last point to avoid extra line
+                                  _points
+                                      .removeLast(); // Remove the last point to avoid extra line
                                 }
                               });
                             },
